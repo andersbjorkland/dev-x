@@ -1,6 +1,7 @@
 {
     "require": {
-        "clue/framework-x": "dev-main"
+        "clue/framework-x": "dev-main",
+        "symfony/dotenv": "^6.0"
     },
     "autoload": {
         "psr-4": {

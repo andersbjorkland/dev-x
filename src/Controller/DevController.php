@@ -10,7 +10,7 @@ class DevController
 {
     public function __invoke()
     {
-        $browser = new Browser();
+        $browser = new Browser();    
 
         return $browser
             ->get('https://dev.to/api/articles?username=andersbjorkland&per_page=1')
