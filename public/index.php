@@ -1,5 +1,6 @@
 <?php
 
+use App\Controller\ApiController;
 use App\Controller\DevController;
 use FrameworkX\App;
 use Symfony\Component\Dotenv\Dotenv;
@@ -14,4 +15,5 @@ $dotenv->loadEnv($path);
 // Start the application
 $app = new App();
 $app->get('/', new DevController());
+$app->get('/api', new ApiController());
 $app->run();

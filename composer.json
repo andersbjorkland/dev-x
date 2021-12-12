@@ -1,7 +1,8 @@
 {
     "require": {
         "clue/framework-x": "dev-main",
-        "symfony/dotenv": "^6.0"
+        "symfony/dotenv": "^6.0",
+        "react/async": "dev-main"
     },
     "autoload": {
         "psr-4": {
