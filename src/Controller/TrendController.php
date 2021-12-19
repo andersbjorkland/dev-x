@@ -4,10 +4,7 @@ namespace App\Controller;
 
 use App\Controller\TwigController;
 use App\Statistics\RunsStatistics;
-use App\Statistics\Statistics;
 use App\Statistics\TrendStatistics;
-use MathPHP\Statistics\Correlation;
-use React\Http\Message\Response;
 
 class TrendController extends TwigController
 {
@@ -31,23 +28,65 @@ class TrendController extends TwigController
         $wordpressAfterValues = $this->getValues($wordpressAfter);
         $phpAfterValues = $this->getValues($phpAfter);
 
-        $phpBeforeRegressionAnalysis = TrendStatistics::regressionAnalysis($phpBeforeValues);
-        $phpRuns = RunsStatistics::runsTest($phpBeforeValues);
-        $phpP = RunsStatistics::runsTestPValue($phpRuns);
-
-
-        $wpBeforeRegressionAnalysis = TrendStatistics::regressionAnalysis($wordpressBeforeValues);
-        $wpBeforeRuns = RunsStatistics::runsTest($wordpressBeforeValues);
-        $wpBeforeP = RunsStatistics::runsTestPValue($wpBeforeRuns);
-        $beforeCorrelation = TrendStatistics::covarianceAnalyses($wordpressBeforeValues, $phpBeforeValues);
-        $afterCorrelation = TrendStatistics::covarianceAnalyses($wordpressAfterValues, $phpAfterValues);
+        $stats = [
+            "wp" => [
+                "before" => [
+                    "data" => $wordpressBefore,
+                    "regression" => [
+                        ...TrendStatistics::regressionAnalysis($wordpressBeforeValues),
+                        "line" => TrendStatistics::getRegressionPoints(TrendStatistics::regressionAnalysis($wordpressBeforeValues)['parameters'], $wordpressBefore),
+                    ],
+                    "runs" => [
+                        "test" => RunsStatistics::runsTest($wordpressBeforeValues), 
+                        "p" => RunsStatistics::runsTestPValue(RunsStatistics::runsTest($wordpressBeforeValues))
+                    ],
+                ],
+                "after" => [
+                    "data" => $wordpressAfter,
+                    "regression" => [
+                        ...TrendStatistics::regressionAnalysis($wordpressAfterValues),
+                        "line" => TrendStatistics::getRegressionPoints(TrendStatistics::regressionAnalysis($wordpressAfterValues)['parameters'], $wordpressAfter),
+                    ],
+                    "runs" => [
+                        "test" => RunsStatistics::runsTest($wordpressAfterValues), 
+                        "p" => RunsStatistics::runsTestPValue(RunsStatistics::runsTest($wordpressAfterValues))
+                    ],
+                ]
+            ],
+            "php" => [
+                "before" => [
+                    "data" => $phpBefore,
+                    "regression" => [
+                        ...TrendStatistics::regressionAnalysis($phpBeforeValues),
+                        "line" => TrendStatistics::getRegressionPoints(TrendStatistics::regressionAnalysis($phpBeforeValues)['parameters'], $phpBefore)
+                    ],
+                    "runs" => [
+                        "test" => RunsStatistics::runsTest($phpBeforeValues), 
+                        "p" => RunsStatistics::runsTestPValue(RunsStatistics::runsTest($phpBeforeValues))
+                    ],
+                ],
+                "after" => [
+                    "data" => $phpAfter,
+                    "regression" => [
+                        ...TrendStatistics::regressionAnalysis($phpAfterValues),
+                        "line" => TrendStatistics::getRegressionPoints(TrendStatistics::regressionAnalysis($phpAfterValues)['parameters'], $phpAfter)
+                    ],
+                    "runs" => [
+                        "test" => RunsStatistics::runsTest($phpAfterValues), 
+                        "p" => RunsStatistics::runsTestPValue(RunsStatistics::runsTest($phpAfterValues))
+                    ],
+                ]
+            ],
+            "correlation" => [
+                "before" => TrendStatistics::covarianceAnalyses($wordpressBeforeValues, $phpBeforeValues),
+                "after" => TrendStatistics::covarianceAnalyses($wordpressAfterValues, $phpAfterValues)
+            ]
+        ];
 
         return $this->render(template: "trend.html.twig", twigParams: [
-            "wp" => json_encode($wordpressAfter),
-            "wpLine" => json_encode($this->getRegressionPoints($phpBeforeRegressionAnalysis, $phpBefore)),
-            "wpLineFunction" => $phpBeforeRegressionAnalysis['equation'],
-            "php" => json_encode($phpAfter),
-            "correlation" => $beforeCorrelation,
+            "stats" => $stats,
+            // "wp" => json_encode($wordpressAfter),
+            // "php" => json_encode($phpAfter),
         ]);
     }
 

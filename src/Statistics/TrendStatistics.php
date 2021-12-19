@@ -32,9 +32,23 @@ class TrendStatistics
 
         $analysis = [
             'equation' => $equation,
-            'parameters' => $parameters
+            'parameters' => $parameters,
         ];
 
         return $analysis;
+    }
+
+    public static function getRegressionPoints(array $parameters, array $arr):array
+    {
+        $points = [];
+        $count = count($arr);
+
+        for ($i=0; $i < $count; $i++) { 
+            $points[] = [
+                'label' => $arr[$i]['label'], 
+                'y' => $parameters['b'] + $parameters['m'] * $i];
+        }
+
+        return $points;
     }
 }

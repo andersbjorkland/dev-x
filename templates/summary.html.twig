@@ -8,7 +8,7 @@
     <div id="chartContainer" style="height: 370px; width: 100%;"></div>
     <h3>Markdown analysis</h3>
 
-    <pre>{{ include("_summary.md.twig", {summary: summary}) }}</pre>
+    <pre>{{ include("includes/_summary.md.twig", {summary: summary}) }}</pre>
     <script>
         window.onload = function () {
         
@@ -41,6 +41,7 @@
                 dataPoints: {{ readingTimeData|raw }}
             }]
         });
+        
         chart.render();
         }
         </script>

@@ -5,49 +5,62 @@
 
 {% block main %}
     <h1>Hello World!!</h1>
-    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    <section>
+        <div id="chartContainer-1" style="height: 370px; width: 100%;"></div>
+        <div>
+        </div>
+    </section>
+    <section id="after-wp-section">
+        <div id="chartContainer-2" style="height: 370px; width: 100%;"></div>
+        <p>Runs Test: Probability for random trend at {{ stats.wp.after.runs.p }}. </p>
+        <p>Linear regression: {{ stats.wp.after.regression.equation }}</p>
+    </section>
+    <section id="after-php-section">
+        <div id="chartContainer-3" style="height: 370px; width: 100%;"></div>
+    </section>
+
     <script>
         window.onload = function () {
-        
-        var chart = new CanvasJS.Chart("chartContainer", {
-            animationEnabled: true,
-            exportEnabled: true,
-            theme: "light2",
-            title: {
-                text: "2021-01 to 2021-12"
-            },
-            axisY: {
-                title: "Relative Interest",
-                titleFontColor: "#000000",
-                maximum: 100,
-            },
-            axisY2: {
-                title: "PHP",
-                'titleFontColor': '#0f0f0f',
-            },
-            data: [
-            {
-                type: "line",
-                name: "WordPress",
-                axisYType: "primary",
-                showInLegend: true,
-                dataPoints: {{ wp|raw }},
-                color: "#4F5B93",
-            },
-            {
-                type: "line",
-                name: "PHP",
-                axisYType: "primary",
-                showInLegend: true,
-                dataPoints: {{ php|raw }},
-                color: "#0f0f0f",
-            },
-            ]
-            
-        });
-        chart.render();
+        {{ include("includes/_2chart.js.twig", {
+            chartId: 1, 
+            chartColor1: "#4F5B93",
+            chartColor2: "#0f0f0f",
+            chartTitle: "2021-01 to 2021-12", 
+            chartYTitle1: "Relative Interest", 
+            chartYTitle2: "PHP", 
+            chartLegend1: "WordPress", 
+            chartLegend2: "PHP", 
+            chartData1: stats.wp.after.data|json_encode,
+            chartData2: stats.php.after.data|json_encode}) }}
+        {{ include("includes/_2chart.js.twig", {
+            chartId: 2, 
+            chartColor1: "#888cbd",
+            chartColor2: "#4F5B93",
+            chartTitle: "WP 2021-01 to 2021-12", 
+            chartYTitle2: "Relative Interest", 
+            chartYTitle1: "Relative Interest", 
+            chartLegend2: "WordPress", 
+            chartLegend1: "Trend", 
+            chartPointStyle1: "line",
+            chartData2: stats.wp.after.data|json_encode,
+            chartData1: stats.wp.after.regression.line|json_encode}) }}
+        {{ include("includes/_2chart.js.twig", {
+            chartId: 3, 
+            chartColor1: "#7f7f7f",
+            chartColor2: "#0f0f0f",
+            chartTitle: "PHP 2021-01 to 2021-12", 
+            chartYTitle2: "Relative Interest", 
+            chartYTitle1: "Relative Interest", 
+            chartLegend2: "PHP", 
+            chartLegend1: "Trend", 
+            chartPointStyle1: "line",
+            chartData2: stats.php.after.data|json_encode,
+            chartData1: stats.php.after.regression.line|json_encode}) }}
+
         }
         </script>
+
+
         <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
 {% endblock %}

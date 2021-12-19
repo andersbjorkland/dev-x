@@ -1,0 +1,25 @@
+let chart{{chartId}} = new CanvasJS.Chart("chartContainer-{{chartId}}", {
+    animationEnabled: true,
+    exportEnabled: true,
+    theme: "light2",
+    title: {
+        text: "{{ chartTitle }}"
+    },
+    axisY: {
+        title: "{{ chartYTitle }}",
+        titleFontColor: "{{ chartColor }}",
+        maximum: 100,
+    },
+    data: [
+    {
+        type: "line",
+        name: "{{ chartLegend }}",
+        axisYType: "primary",
+        showInLegend: true,
+        dataPoints: {{ chartData|raw }},
+        color: "{{ chartColor }}",
+    }
+    ]
+    
+});
+chart{{chartId}}.render();
