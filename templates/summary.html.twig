@@ -1,0 +1,49 @@
+{% extends "base.html.twig" %}
+
+{% block javascritpt %}
+{% endblock %}
+
+{% block main %}
+    <h1>Hello World!!</h1>
+    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    <h3>Markdown analysis</h3>
+
+    <pre>{{ include("_summary.md.twig", {summary: summary}) }}</pre>
+    <script>
+        window.onload = function () {
+        
+        var chart = new CanvasJS.Chart("chartContainer", {
+            animationEnabled: true,
+            exportEnabled: true,
+            theme: "light2",
+            title: {
+                text: "The C in PHP stands for Christmas"
+            },
+            axisY: {
+                title: "Engagement",
+                titleFontColor: "#6D78AD",
+            },
+            axisY2: {
+                title: "Reading Time (minutes)",
+                titleFontColor: "#6DADA2",
+            },
+            data: [{
+                type: "line",
+                name: "Engagement",
+                showInLegend: true,
+                dataPoints: {{ engagementData|raw }}
+            },
+            {
+                type: "line",
+                name: "Reading Time",
+                axisYType: "secondary",
+                showInLegend: true,
+                dataPoints: {{ readingTimeData|raw }}
+            }]
+        });
+        chart.render();
+        }
+        </script>
+        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+{% endblock %}

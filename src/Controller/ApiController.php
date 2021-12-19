@@ -56,7 +56,8 @@ class ApiController
         $views = $article['page_views_count'];
         $title = $article['title'];
         $url = $article['canonical_url'];
-        $engagement = round($reactions / $views * 100);
+        $commentsCount = $article['comments_count'];
+        $engagement = $reactions + $commentsCount;
 
         $parsedArticle = [
             'id' => $id,
@@ -104,6 +105,7 @@ window.onload = function () {
  
 var chart = new CanvasJS.Chart("chartContainer", {
     animationEnabled: true,
+    exportEnabled: true,
 	theme: "light2",
 	title: {
 		text: "The C in PHP stands for Christmas"

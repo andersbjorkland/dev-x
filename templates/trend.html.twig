@@ -1,0 +1,53 @@
+{% extends "base.html.twig" %}
+
+{% block javascritpt %}
+{% endblock %}
+
+{% block main %}
+    <h1>Hello World!!</h1>
+    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    <script>
+        window.onload = function () {
+        
+        var chart = new CanvasJS.Chart("chartContainer", {
+            animationEnabled: true,
+            exportEnabled: true,
+            theme: "light2",
+            title: {
+                text: "2021-01 to 2021-12"
+            },
+            axisY: {
+                title: "Relative Interest",
+                titleFontColor: "#000000",
+                maximum: 100,
+            },
+            axisY2: {
+                title: "PHP",
+                'titleFontColor': '#0f0f0f',
+            },
+            data: [
+            {
+                type: "line",
+                name: "WordPress",
+                axisYType: "primary",
+                showInLegend: true,
+                dataPoints: {{ wp|raw }},
+                color: "#4F5B93",
+            },
+            {
+                type: "line",
+                name: "PHP",
+                axisYType: "primary",
+                showInLegend: true,
+                dataPoints: {{ php|raw }},
+                color: "#0f0f0f",
+            },
+            ]
+            
+        });
+        chart.render();
+        }
+        </script>
+        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+{% endblock %}
