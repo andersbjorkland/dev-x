@@ -8,15 +8,44 @@
     <section>
         <div id="chartContainer-1" style="height: 370px; width: 100%;"></div>
         <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">WordPress trend</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Runs Test</td>
+                        <td>P < 0.05 ({{ stats.wp.after.runs.p }})</td>
+                    </tr>
+                    <tr>
+                        <td>Linear regression</td>
+                        <td>{{ stats.wp.after.regression.equation }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">PHP trend</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Runs Test</td>
+                        <td>P < 0.05 ({{ stats.php.after.runs.p }})</td>
+                    </tr>
+                    <tr>
+                        <td>Linear regression</td>
+                        <td>{{ stats.php.after.regression.equation }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Correlation WordPress and PHP trend</h3>
+            <p>Pearson's Correlation (r): {{ stats.correlation.after.pearson }}</p>
         </div>
-    </section>
-    <section id="after-wp-section">
-        <div id="chartContainer-2" style="height: 370px; width: 100%;"></div>
-        <p>Runs Test: Probability for random trend at {{ stats.wp.after.runs.p }}. </p>
-        <p>Linear regression: {{ stats.wp.after.regression.equation }}</p>
-    </section>
-    <section id="after-php-section">
-        <div id="chartContainer-3" style="height: 370px; width: 100%;"></div>
     </section>
 
     <script>
@@ -32,30 +61,7 @@
             chartLegend2: "PHP", 
             chartData1: stats.wp.after.data|json_encode,
             chartData2: stats.php.after.data|json_encode}) }}
-        {{ include("includes/_2chart.js.twig", {
-            chartId: 2, 
-            chartColor1: "#888cbd",
-            chartColor2: "#4F5B93",
-            chartTitle: "WP 2021-01 to 2021-12", 
-            chartYTitle2: "Relative Interest", 
-            chartYTitle1: "Relative Interest", 
-            chartLegend2: "WordPress", 
-            chartLegend1: "Trend", 
-            chartPointStyle1: "line",
-            chartData2: stats.wp.after.data|json_encode,
-            chartData1: stats.wp.after.regression.line|json_encode}) }}
-        {{ include("includes/_2chart.js.twig", {
-            chartId: 3, 
-            chartColor1: "#7f7f7f",
-            chartColor2: "#0f0f0f",
-            chartTitle: "PHP 2021-01 to 2021-12", 
-            chartYTitle2: "Relative Interest", 
-            chartYTitle1: "Relative Interest", 
-            chartLegend2: "PHP", 
-            chartLegend1: "Trend", 
-            chartPointStyle1: "line",
-            chartData2: stats.php.after.data|json_encode,
-            chartData1: stats.php.after.regression.line|json_encode}) }}
+
 
         }
         </script>
