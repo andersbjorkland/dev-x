@@ -4,69 +4,144 @@
 {% endblock %}
 
 {% block main %}
-    <h1>Hello World!!</h1>
+    <h1>Google Search Trends for PHP and Wordpress</h1>
     <section>
+    <h2 class="mt-5">Trend from 2016 to 2020</h2>
         <div id="chartContainer-1" style="height: 370px; width: 100%;"></div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">WordPress trend</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Runs Test</td>
+                    <td>P < 0.05 ({{ stats.wp.before.runs.p }})</td>
+                </tr>
+                <tr>
+                    <td>Linear regression</td>
+                    <td>{{ stats.wp.before.regression.equation }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">PHP trend</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Runs Test</td>
+                    <td>P < 0.05 ({{ stats.php.before.runs.p }})</td>
+                </tr>
+                <tr>
+                    <td>Linear regression</td>
+                    <td>{{ stats.php.before.regression.equation }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Correlation of WordPress and PHP trend</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Pearson's Correlation (r)</td>
+                    <td>{{ stats.correlation.before.pearson|round(2) }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <section class="pt-5">
+        <h2 class="mt-5">Trend from 2021</h2>
         <div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">WordPress trend</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Runs Test</td>
-                        <td>P < 0.05 ({{ stats.wp.after.runs.p }})</td>
-                    </tr>
-                    <tr>
-                        <td>Linear regression</td>
-                        <td>{{ stats.wp.after.regression.equation }}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">PHP trend</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Runs Test</td>
-                        <td>P < 0.05 ({{ stats.php.after.runs.p }})</td>
-                    </tr>
-                    <tr>
-                        <td>Linear regression</td>
-                        <td>{{ stats.php.after.regression.equation }}</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>Correlation WordPress and PHP trend</h3>
-            <p>Pearson's Correlation (r): {{ stats.correlation.after.pearson }}</p>
+            <div id="chartContainer-2" style="height: 370px; width: 100%;"></div>
+            <div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">WordPress trend</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Runs Test</td>
+                            <td>P < 0.05 ({{ stats.wp.after.runs.p }})</td>
+                        </tr>
+                        <tr>
+                            <td>Linear regression</td>
+                            <td>{{ stats.wp.after.regression.equation }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">PHP trend</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Runs Test</td>
+                            <td>P < 0.05 ({{ stats.php.after.runs.p }})</td>
+                        </tr>
+                        <tr>
+                            <td>Linear regression</td>
+                            <td>{{ stats.php.after.regression.equation }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Correlation of WordPress and PHP trend</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Pearson's Correlation (r)</td>
+                            <td>{{ stats.correlation.after.pearson|round(2) }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </section>
 
-    <script>
+{% endblock %}
+
+{% block bodyJavascript %}
+<script>
         window.onload = function () {
         {{ include("includes/_2chart.js.twig", {
             chartId: 1, 
             chartColor1: "#4F5B93",
             chartColor2: "#0f0f0f",
-            chartTitle: "2021-01 to 2021-12", 
+            chartTitle: "", 
+            chartYTitle1: "Relative Interest", 
+            chartYTitle2: "PHP", 
+            chartLegend1: "WordPress", 
+            chartLegend2: "PHP", 
+            chartData1: stats.wp.before.data|json_encode,
+            chartData2: stats.php.before.data|json_encode}) }}
+        {{ include("includes/_2chart.js.twig", {
+            chartId: 2, 
+            chartColor1: "#4F5B93",
+            chartColor2: "#0f0f0f",
+            chartTitle: "", 
             chartYTitle1: "Relative Interest", 
             chartYTitle2: "PHP", 
             chartLegend1: "WordPress", 
             chartLegend2: "PHP", 
             chartData1: stats.wp.after.data|json_encode,
             chartData2: stats.php.after.data|json_encode}) }}
-
-
         }
         </script>
 
 
         <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-
 {% endblock %}
